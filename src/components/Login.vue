@@ -1,5 +1,5 @@
 <template>
-    <div class="login-box" :style="{top: top + 'px',left:left + 'px'}">
+    <div id="login-box" v-drag :style="{top: top + 'px',left:left + 'px'}">
         <div class="info-box">
             <div class="login-top">JiiHome 几和家具 <a href="javascript:void(0)" @click="closeLogin" class="close"><i class="el-icon-circle-close"></i></a> </div>
             <div class="pass">
@@ -69,6 +69,26 @@
             this.initData();
             this.changeCode();
         },
+
+        directives:{
+            drag(el) {
+                el.onmousedown = function(e) {
+                var divx = e.clientX - document.getElementById('login-box').offsetLeft;
+                var divy = e.clientY - document.getElementById('login-box').offsetTop;
+                document.onmousemove = function(e){
+                    var l = e.clientX - divx;
+                    var t = e.clientY - divy;
+                    document.getElementById('login-box').style.left=l+'px';
+                    document.getElementById('login-box').style.top=t+'px';
+                }
+                document.onmouseup = function(e){
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                }
+            }
+            }
+        },
+
         methods:{
             initData(){
                 var h = document.documentElement.clientHeight || document.body.clientHeight;
@@ -121,8 +141,9 @@
 
             goRegister(){
                 this.$router.push('/register');
-            }
-        },
+            },
+          
+        }
     }
 </script>
 
@@ -131,13 +152,13 @@
         text-decoration:none;
         color:#fff;
     }
-    .login-box{
+    #login-box{
         position:absolute;
         width: 350px;
         height: 436px;
         z-index: 999999;
         padding:10px;
-        background-color: #f3f3f3;
+        // background-color: #f3f3f3;
     }
     .info-box{
         width:100%;
